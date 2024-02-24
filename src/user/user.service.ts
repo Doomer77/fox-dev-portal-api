@@ -79,7 +79,7 @@ export class UserService {
 
   generateJwt(user: UserEntity) {
     return sign(
-      { id: user.id, username: user.username, email: user.email },
+      { id: user.id, username: user.username, email: user.email, bio: user.bio, image: user.image },
       JWT_SECRET,
     );
   }
