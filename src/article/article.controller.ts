@@ -1,10 +1,19 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { ArticleService } from './article.service';
 import { AuthGuard } from '@app/user/guards/auth.guard';
 import { User } from '@app/user/decorators/user.decorator';
 import { UserEntity } from '@app/user/user.entity';
 import { CreateArticleDto } from '@app/article/dto/CreateArticleDto';
 import { ArticleResponseInterface } from '@app/article/types/articleResponse.interface';
+import { DeleteDateColumn } from 'typeorm';
 
 @Controller('articles')
 export class ArticleController {
@@ -20,5 +29,22 @@ export class ArticleController {
       createArticleDto,
     );
     return this.articleService.buildArticleResponse(article);
+  }
+
+  @Get(':slug')
+  async getSingleArticle(
+    @Param('slug') slug: string,
+  ): Promise<ArticleResponseInterface> {
+    const article = await this.articleService.findBySlug(slug);
+    return this.articleService.buildArticleResponse(article);
+  }
+
+  @Delete(':slug')
+  @UseGuards(AuthGuard)
+  async deleteArticle(
+    @User('id') currentUserId: number,
+    @Param('slug') slug: string,
+  ) {
+    return await this.articleService.deleteArticle(slug, currentUserId);
   }
 }
