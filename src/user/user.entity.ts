@@ -16,10 +16,10 @@ export class UserEntity {
   id: number;
 
   @Column()
-  username: string;
+  email: string;
 
   @Column()
-  email: string;
+  username: string;
 
   @Column({ default: '' })
   bio: string;

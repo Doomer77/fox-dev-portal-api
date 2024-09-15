@@ -1,4 +1,4 @@
-import { UserType } from '@app/user/types/user.types';
+import { UserType } from './user.types';
 
 export interface UserResponseInterface {
   user: UserType & { token: string };
